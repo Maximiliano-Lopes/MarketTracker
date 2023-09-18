@@ -1,0 +1,51 @@
+#container{
+    display: flex;
+    justify-content: center;
+    width: 90vw;
+    flex-direction: column;
+}
+#titleQuote{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+img{
+    border-radius: 5px;
+}
+#titleQuote>div{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 0vw 2vw 0 2vw;
+}
+#titleQuote div h3,p{
+    text-align: left;
+    padding: 0;
+    margin-block: 0;
+    font-size: 3vw;
+}
+.card{
+    background-color: rgba(0, 0, 0, 0.205);
+    padding: 4vw;
+    margin: 1vw;
+    border-radius: 5px;
+}
+@media screen and (min-width: 500px){
+    #container{
+        width: 60vw;
+    }
+    #titleQuote div h3,p{
+        font-size: 1vw;
+    }
+    #titleQuote>div{
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        padding: 0;
+    }
+    .card{
+        padding: 1vw;
+        margin: 0.5vw;
+        border-radius: 5px;
+    }
+}
