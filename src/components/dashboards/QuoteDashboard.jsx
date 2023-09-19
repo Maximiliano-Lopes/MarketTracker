@@ -2,21 +2,46 @@ import PropTypes from "prop-types";
 import React from "react";
 import Navigation from "../navigation/Navigation";
 import "./styles/styles.css";
-
-
-
-
-
+import QuoteChart from "./QuoteChart";
+import "chart.js/auto";
 
 export default function QuoteDashboard({ quoteInfo }) {
-  
-  const [result, setTicker] = React.useState(null); 
+  const [result, setTicker] = React.useState(null);
+
+  const [datesChart, setDatesChart] = React.useState([]);
+  const [labelsChart, setlabelsChart] = React.useState([]);
 
   React.useMemo(() => {
     setTicker(quoteInfo);
-    console.log("quoteInfo: ", quoteInfo);
-   
-  }, [quoteInfo]);
+      if(result != null){
+        let datas = []
+        let dados = []
+        result.results[0].historicalDataPrice.forEach(function (element) {
+            let data = new Date(element.date * 1000);
+            let dataFormatada = ((data.getDate())) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear();
+            datas.push(dataFormatada);
+            dados.push(element.high);
+          });
+        setlabelsChart(datas)
+        setDatesChart(dados)
+      }
+  }, [quoteInfo, result]);
+
+const labels = labelsChart
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "Percurso de " + labelsChart[0] +" até " + labelsChart[(labelsChart.length - 1)],
+          data: datesChart,
+          borderColor: "purple",
+          borderWidth: 1,
+        },
+      ],
+    };
+
+  
+
 
   return (
     <div>
@@ -34,13 +59,17 @@ export default function QuoteDashboard({ quoteInfo }) {
                 <p>{result.results[0].longName}</p>
               </div>
               <div>
-                <p><strong>Atualizado em:</strong></p>
+                <p>
+                  <strong>Atualizado em:</strong>
+                </p>
                 <p>{result.results[0].updatedAt}</p>
               </div>
             </div>
             <div>
               <div className="card">
-                <p><strong>Preço</strong></p>
+                <p>
+                  <strong>Preço</strong>
+                </p>
                 <p>
                   R${" "}
                   {new Intl.NumberFormat("pt-br").format(
@@ -48,12 +77,10 @@ export default function QuoteDashboard({ quoteInfo }) {
                   )}
                 </p>
               </div>
-              {/*  <div>
-              <p>Variação (dia)</p>
-              <p> R$ 0,84 (2.54%)▲</p>
-            </div> */}
               <div className="card">
-                <p><strong>Min. 52 Semanas</strong></p>
+                <p>
+                  <strong>Min. 52 Semanas</strong>
+                </p>
                 <p>
                   R${" "}
                   {new Intl.NumberFormat("pt-br").format(
@@ -62,7 +89,9 @@ export default function QuoteDashboard({ quoteInfo }) {
                 </p>
               </div>
               <div className="card">
-                <p><strong>Máx. 52 Semanas</strong></p>
+                <p>
+                  <strong>Máx. 52 Semanas</strong>
+                </p>
                 <p>
                   {" "}
                   R${" "}
@@ -72,7 +101,9 @@ export default function QuoteDashboard({ quoteInfo }) {
                 </p>
               </div>
               <div className="card">
-                <p><strong>Capitalização de mercado</strong></p>
+                <p>
+                  <strong>Capitalização de mercado</strong>
+                </p>
                 <p>
                   {" "}
                   R${" "}
@@ -81,6 +112,9 @@ export default function QuoteDashboard({ quoteInfo }) {
                   )}
                 </p>
               </div>
+            </div>
+            <div>
+              <QuoteChart chartData={data} />
             </div>
           </div>
         </div>
